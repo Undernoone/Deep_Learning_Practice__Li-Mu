@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import torch
 import numpy
@@ -46,8 +47,13 @@ import os
 # print(type(e))
 # print(type(e.item())) # 转换为python的float类型
 
+# 创建一个名为“李沐深度学习data”的文件夹，exist_ok=True表示如果文件夹已存在不会报错
 os.makedirs(os.path.join("..", "李沐深度学习data"), exist_ok=True) # 创建文件夹
+
+# 定义csv文件的路径
 data_file = os.path.join("..", "李沐深度学习data", "data.csv") # 文件路径
+
+# 写入数据到csv文件中
 with open(data_file, "w") as f:
     f.write('NumRooms,Alley,Price\n')
     f.write('NA,Pave,127500\n')
@@ -55,8 +61,21 @@ with open(data_file, "w") as f:
     f.write('3,NA,178100\n')
     f.write('4,NA,140000\n')
 
-data = pd.read_csv(data_file) # 读取csv文件
+data = pd.read_csv(data_file)
 print(data)
-inputs,outputs = data.iloc[:, 0:2], data.iloc[:, 2] # 输入特征为NumRooms,Alley，输出为Price
-inputs = inputs.fillna(inputs.mean()) # 填充缺失值
+
+inputs, outputs = data.iloc[:, 0:2], data.iloc[:, 2]
 print(inputs)
+print(outputs)
+inputs['NumRooms'] = pd.to_numeric(inputs['NumRooms'], errors='coerce')
+numeric_columns = inputs.select_dtypes(include=[np.number]).columns
+inputs[numeric_columns] = inputs[numeric_columns].fillna(inputs[numeric_columns].mean())
+print(inputs)
+inputs = pd.get_dummies(inputs, dummy_na=True)
+print(inputs)
+
+inputs = inputs.apply(pd.to_numeric)
+inputs_tensor = torch.tensor(inputs.values, dtype=torch.float32)
+outputs_tensor = torch.tensor(outputs.values, dtype=torch.float32)
+print(inputs_tensor)
+print(outputs_tensor)
