@@ -47,13 +47,10 @@ import os
 # print(type(e))
 # print(type(e.item())) # 转换为python的float类型
 
-# 创建一个名为“李沐深度学习data”的文件夹，exist_ok=True表示如果文件夹已存在不会报错
-os.makedirs(os.path.join("..", "李沐深度学习data"), exist_ok=True) # 创建文件夹
+os.makedirs(os.path.join("..", "Deeplearning_Li Mu_Date"), exist_ok=True) # 创建文件夹
 
-# 定义csv文件的路径
-data_file = os.path.join("..", "李沐深度学习data", "data.csv") # 文件路径
+data_file = os.path.join("..", "Deeplearning_Li Mu_Date", "data.csv") # 文件路径
 
-# 写入数据到csv文件中
 with open(data_file, "w") as f:
     f.write('NumRooms,Alley,Price\n')
     f.write('NA,Pave,127500\n')

@@ -31,6 +31,7 @@ print('features:',features[0],'\nlabel:',labels[0])
 
 d2l.set_figsize()
 d2l.plt.scatter(features[:,1].detach().numpy(),labels.detach().numpy(),1)
+d2l.plt.show()
 
 def data_iter(batch_size,features,labels):
     num_examples = len(features)
