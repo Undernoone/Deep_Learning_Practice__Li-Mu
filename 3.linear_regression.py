@@ -5,13 +5,18 @@ import torch.utils.data as data
 from d2l import torch as d2l
 from torch import nn
 
-# 传统的线性回归算法
-def synthetic_data(w,b,num_exaples):
+''' 
+传统的线性回归算法
+idea:首先，我们设定了真实的权重 w 和偏置 b，并使用它们生成了 1000 个数据点。
+接着，我们假设不知道这些真实值，通过训练模型来反推最接近真实值的权重和偏置。
+'''
+def date_generator(w,b,num_exaples):
     """ 生成 y = Xw + b + 噪声 """
-    X = torch.normal(0,1,(num_exaples,len(w)))
-    y = torch.matmul(X,w) + b
+    X = torch.normal(0,1,(num_exaples,len(w))) # 正态分布
+    print('X:',X)
+    y = torch.matmul(X,w) + b # 矩阵乘法
     """
-     X 是一个形状为 (num_examples, len(w)) 的矩阵
+     X 是一个形状为 (num_examples, len(w)) 的矩阵,此处len (w)=2
      w 是一个形状为 (len(w), 1) 的列向量
      阵乘法后得到形状为 (num_examples, 1) 的结果
     """
@@ -20,7 +25,7 @@ def synthetic_data(w,b,num_exaples):
 
 true_w = torch.tensor([2,-3.4])
 true_b = 4.2
-features, labels = synthetic_data(true_w, true_b, 1000)
+features, labels = date_generator(true_w, true_b, 1000)
 """
  使用真实的权重 true_w 和偏置 true_b 生成 1000 个样本的数据
  synthetic_data 函数返回特征矩阵 features 和标签向量 labels
@@ -42,13 +47,14 @@ def data_iter(batch_size,features,labels):
         yield features[batch_indices], labels[batch_indices] # 获得随即顺序的特征，及对应的标签
 
 batch_size = 10
+
 for X,y in data_iter(batch_size, features, labels):
     print(X, '\n', y) # 取一个批次后，就break跳出了
     break
 
 # 定义初始化模型参数
-w = torch.normal(0,0.01,size=(2,1),requires_grad=True)
-b = torch.zeros(1,requires_grad=True)
+train_w = torch.normal(0,0.01,size=(2,1),requires_grad=True)
+train_b = torch.zeros(1, requires_grad=True)
 
 # 定义模型
 def linreg(X,w,b):
@@ -70,21 +76,24 @@ loss = squared_loss
 
 for epoch in range(num_epochs):
     for X,y in data_iter(batch_size,features,labels):
-        l = loss(net(X,w,b),y) # x和y的小批量损失
+        l = loss(net(X, train_w, train_b), y) # x和y的小批量损失
         # 因为l是形状是(batch_size,1)，而不是一个标量。l中所有元素被加到一起
         # 并以此计算关于[w,b]的梯度
         l.sum().backward()
-        sgd([w,b],lr,batch_size) #使用参数的梯度更新参数
+        sgd([train_w, train_b], lr, batch_size) # 使用参数的梯度更新参数
     with torch.no_grad():
-        train_l = loss(net(features,w,b),labels)
+        train_l = loss(net(features, train_w, train_b), labels)
         print(f'epoch{epoch+1},loss{float(train_l.mean()):f}')
 
     # 比较真实参数和通过训练学到的参数来评估训练的成功程度
-print(f'w的估计误差：{true_w-w.reshape(true_w.shape)}')
-print(f'b的估计误差：{true_b-b}')
+
+print(train_w)
+print(train_b)
+print(f'w的估计误差：{true_w - train_w.reshape(true_w.shape)}')
+print(f'b的估计误差：{true_b - train_b}')
 
 # 使用PyTorch实现线性回归
-def synthetic_data(w,b,num_exaples):
+def data_generator_pytorch(w,b,num_exaples):
     X = torch.normal(0,1,(num_exaples,len(w)))
     y = torch.matmul(X,w) + b
     y += torch.normal(0,0.01,y.shape)
@@ -92,7 +101,7 @@ def synthetic_data(w,b,num_exaples):
 
 true_w = torch.tensor([2,-3.4])
 true_b = 4.2
-features, labels = synthetic_data(true_w, true_b, 1000)
+features, labels = data_generator_pytorch(true_w, true_b, 1000)
 
 def load_array(data_arrays, batch_size, is_train=True):
     dataset = data.TensorDataset(*data_arrays)
