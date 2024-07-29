@@ -66,7 +66,6 @@ def train_concise(wd):
             if(epoch + 1) % 5 == 0:
                 animator.add(epoch + 1, (d2l.evaluate_loss(net, train_iter, loss), d2l.evaluate_loss(net,test_iter,loss)))
     print('w的L2范数是',net[0].weight.norm().item())
-    # 这些图看起来和我们从零开始实现权重衰减时的图相同
 train_concise(0)
 d2l.plt.show()
 train_concise(3)
