@@ -17,19 +17,19 @@ class MLP(nn.Module):
 net = MLP(20, 256, 10)
 print(net(X))
 
-# class MySequential(nn.Module):
-#     def __init__(self, *args):
-#         super().__init__()
-#         for block in args:
-#             self.modules[block] = block
-#
-#     def forward(self, X):
-#         for block in self._modules.values():
-#             X = block(X)
-#         return X
-#
-# net = MySequential(nn.Linear(20, 256), nn.ReLU(), nn.Linear(256, 10))
-# print(net(X))
+class MySequential(nn.Module):
+    def __init__(self, *args):
+        super().__init__()
+        for block in args:
+            self._modules[block] = block
+
+    def forward(self, X):
+        for block in self._modules.values():
+            X = block(X)
+        return X
+
+net = MySequential(nn.Linear(20, 256), nn.ReLU(), nn.Linear(256, 10))
+print(net(X))
 #
 # class FixedHiddenMLP(nn.Module):
 #     def __init__(self):

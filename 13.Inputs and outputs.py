@@ -51,7 +51,8 @@ Y2 = corr2d_multi_in_out(X,K)
 assert float(torch.abs(Y1-Y2).sum()) < 1e-6
 print(float(torch.abs(Y1-Y2).sum()))
 
-def comp_conv2d(conv2d, X): # conv2d 作为传参传进去，在内部使用
+# Pytorc卷积实现
+def comp_conv2d(conv2d, X):
     X = X.reshape((1,1)+X.shape) # 在维度前面加入一个通道数和批量大小数
     Y = conv2d(X)  # 卷积处理是一个四维的矩阵
     return Y.reshape(Y.shape[2:]) # 将前面两个维度拿掉
