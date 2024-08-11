@@ -49,9 +49,10 @@ print(e)
 print(e.item())
 print(type(e))
 print(type(e.item())) # 转换为python的float类型
+print('------------------------------------------------------------')
 
+# 数据预处理
 os.makedirs(os.path.join("..", "Deeplearning_Li Mu_Date"), exist_ok=True) # 创建文件夹
-
 data_file = os.path.join("..", "Deeplearning_Li Mu_Date", "data.csv") # 文件路径
 
 with open(data_file, "w") as f:
@@ -64,7 +65,7 @@ with open(data_file, "w") as f:
 data = pd.read_csv(data_file)
 print(data)
 
-inputs, outputs = data.iloc[:, 0:2], data.iloc[:, 2]
+inputs, outputs = data.iloc[:, 0:2], data.iloc[:, 2] # inputs取前两列，outputs取第三列
 print(inputs)
 print(outputs)
 inputs['NumRooms'] = pd.to_numeric(inputs['NumRooms'], errors='coerce')
