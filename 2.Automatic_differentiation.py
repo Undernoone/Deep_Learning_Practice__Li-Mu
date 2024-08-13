@@ -1,32 +1,32 @@
 import torch
 x = torch.arange(4.0)
-print('x:',x) # 在外面计算y关于x的梯度之前，需要一个地方来存储梯度。
+print('x:',x)
 
-x.requires_grad_(True) # 等价于 x = torch.arange(4.0,requires_grad=True)
-print('x.grad_1:',x.grad) # x.grad是存梯度的地方，默认为None，即还没有求导求出梯度出来
+x.requires_grad_(True) # Equivalent to x = torch.arange(4.0,requires_grad=True)
+print('x.grad_1:',x.grad) # x.grad是存梯度的地方，默认为None
 
-y = 2 * torch.dot(x,x) # 向量点积运算
-print('y_2:',y) # grad_fn是隐式的构造了梯度函数，1+4+9=14
-y.backward() # 反向传播后会有梯度计算出来
-print('x.grad_2:',x.grad) # 访问导数，即访问梯度，y=2*x^2，y'=4x，所以x.grad=4x
+y = 2 * torch.dot(x,x) # y = 2（x^2） = 2(0+1+4+9) = 28
+print('y_2:',y)
+y.backward() # After this line, y.grad = 2x, where x is the input tensor
+print('x.grad_2:',x.grad) # Accessing the derivative, accessing the gradient， y=2*（x^2），y'=4x，so,x.grad=4x
 
-x.grad.zero_() # 梯度清零
-y = x.sum() # 这里的y是一个标量，sum函数是对张量所有的元素进行求和，即y=x1+x2+x3......，y'=1，所以x.grad自然是全1
-print('y_3:',y)
+x.grad.zero_() # dereference the gradient
+y = x.sum()
+print('y_3:',y) # 这里的y是一个标量，0+1+2+3=6
 y.backward()
-print('x.grad_3:',x.grad)
+print('x.grad_3:',x.grad) # Accessing the derivative, accessing the gradient， y=x1+x2+x3......，y'=1，so，x.grad=1
 
 y.backward()
 x.grad.zero_()
 y = x * x
-print('y_4:',y) # 这里的y是一个向量，x^2，y'=2x，所以x.grad=2x
+print('y_4:',y) # 这里的y是一个向量，y=x^2，y'=2x，所以x.grad=2x
 y.sum().backward()
-print('x.grad_4:',x.grad)
+print('x.grad_4:',x.grad) # y=x^2，y'=2x，so，x.grad=2x
 
 x.grad.zero_()
 y = x * x
 print('y_5:',y)
-u = y.detach() # y.detach把y当作一个常数，而不是关于x的一个函数
+u = y.detach() # y.detach：将y当作一个常数，而不是关于x的一个函数
 print('y.detach():',y.detach())
 print('u:',u)
 z = u * x

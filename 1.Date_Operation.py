@@ -7,36 +7,36 @@ import os
 x = torch.arange(12)
 print('x:',x)
 print('x.shape:',x.shape)
-print(x.numel()) # 返回int型的元素数量12
+print(x.numel()) # returns the number of elements in the tensor(int)
 x_reshape = x.reshape(3, 4)
 print(x_reshape)
 print(x_reshape.shape)
-print(x.numel()) # 返回int型的元素数量3*4=12
+print(x.numel()) # returns the number of elements in the tensor(int)
 print('------------------------------------------------------------')
 
-all_zeros = torch.zeros((2,3,4)) # 二维三行四列的全零张量
+all_zeros = torch.zeros((2,3,4)) # 2 dimension 3 row 4 col tensor with all zeros
 print(all_zeros)
-all_ones = torch.ones((2,3,4)) # 二维三行四列的全一张量
+all_ones = torch.ones((2,3,4)) # 2 dimension 3 row 4 col tensor with all ones
 print(all_ones)
 print('------------------------------------------------------------')
 
 a = torch.tensor([1,2,3],)
 b = torch.tensor([4,5,6])
-print(a+b)
-print(torch.exp(a))
+print(a+b) # [5 7 9]
+print(torch.exp(a)) # [ 2.7182817  7.3890562  20.08553692]
 print('------------------------------------------------------------')
 
 c = torch.arange(12, dtype=torch.float32,).reshape(3,4)
 d = torch.arange(12, 24, dtype=torch.float32,).reshape(3,4) # 左闭右开
 print(c)
 print(d)
-print(torch.cat([c,d],dim=0)) # dim的数值为维度，0表示按行拼接，1表示按列拼接
-print(torch.cat([c,d],dim=1)) # dim的数值为维度，0表示按行拼接，1表示按列拼接
+print(torch.cat([c,d],dim=0)) # 维度0表示按行拼接，1表示按列拼接
+print(torch.cat([c,d],dim=1)) #
 print('------------------------------------------------------------')
 
-demo = [[1,2,3],[4,5,6]]
-demo_numpy = numpy.array(demo)
-demo_tensor = torch.tensor(demo)
+demo = [[1,2,3],[4,5,6]] # List of lists
+demo_numpy = numpy.array(demo)  # Convert list of lists to numpy array
+demo_tensor = torch.tensor(demo) # Convert list of lists to tensor
 print(demo_numpy)
 print(demo_tensor)
 print(type(demo))
@@ -44,11 +44,11 @@ print(type(demo_numpy))
 print(type(demo_tensor))
 print('------------------------------------------------------------')
 
-e = torch.tensor([3.5])
+e = torch.tensor([3])
 print(e)
-print(e.item())
+print(e.item()) # return the value of tensor as a Python scalar
 print(type(e))
-print(type(e.item())) # 转换为python的float类型
+print(type(e.item())) # return the type of the scalar value
 print('------------------------------------------------------------')
 
 # 数据预处理
@@ -74,7 +74,6 @@ inputs[numeric_columns] = inputs[numeric_columns].fillna(inputs[numeric_columns]
 print(inputs)
 inputs = pd.get_dummies(inputs, dummy_na=True)
 print(inputs)
-
 inputs = inputs.apply(pd.to_numeric)
 inputs_tensor = torch.tensor(inputs.values, dtype=torch.float32)
 outputs_tensor = torch.tensor(outputs.values, dtype=torch.float32)
