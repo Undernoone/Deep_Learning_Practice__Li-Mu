@@ -48,6 +48,24 @@ print(net(X))
 # net = FixedHiddenMLP()
 # X = torch.rand(2,20)
 # net(X)
+# 在正向传播函数中执行代码
+class FixedHiddenMLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.rand_weight = torch.rand((20,20),requires_grad=False)
+        self.linear = nn.Linear(20,20)
+
+    def forward(self, X):
+        X = self.linear(X)
+        X = F.relu(torch.mm(X, self.rand_weight + 1))
+        X = self.linear(X)
+        while X.abs().sum() > 1:
+            X /= 2
+        return X.sum()
+
+net = FixedHiddenMLP()
+X = torch.rand(2,20)
+net(X)
 
 
 

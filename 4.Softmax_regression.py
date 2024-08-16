@@ -1,14 +1,14 @@
 import torch
 import torchvision
 from torch import nn
-# from d2l.tensorflow import Accumulator
-from d2l.torch import get_dataloader_workers
-from torch.utils import data
-from torchvision import transforms
+# # from d2l.tensorflow import Accumulator
+# from d2l.torch import get_dataloader_workers
+# from torch.utils import data
+# from torchvision import transforms
 from d2l import torch as d2l
-
-d2l.use_svg_display()
-
+#
+# d2l.use_svg_display()
+#
 # # 传统的softmax回归模型
 #
 # mnist_train = torchvision.datasets.FashionMNIST(root='D:\\Deeplearning_Li Mu_Date\\FashionMNIST', train=True, transform=transforms.ToTensor(), download=True)
@@ -132,15 +132,15 @@ d2l.use_svg_display()
 #     return metric[0] / metric[1] # 返回正确预测数/预测总数
 #
 # print(evaluate_accuracy(net, test_iter))
-
+#
 # Pytorch实现softmax回归
+
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
 # PyTorch不会隐式地调整输入的形状
 # 因此，我们定义了展平层(flatten)在线性层前调整网络输入的形状
 net = nn.Sequential(nn.Flatten(), nn.Linear(784, 10))
 print(net)
-
 
 def init_weights(m):
     if type(m) == nn.Linear:

@@ -7,9 +7,14 @@ dropout1, dropout2 = 0.2, 0.5
 loss = nn.CrossEntropyLoss()
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
 
-net = nn.Sequential(nn.Flatten(),nn.Linear(784,256),nn.ReLU(),
-                    nn.Dropout(dropout1),nn.Linear(256,256),nn.ReLU(),
-                    nn.Dropout(dropout2),nn.Linear(256,10))
+net = nn.Sequential(nn.Flatten(),
+                    nn.Linear(784,256),
+                    nn.ReLU(),
+                    nn.Dropout(dropout1),
+                    nn.Linear(256,256),
+                    nn.ReLU(),
+                    nn.Dropout(dropout2),
+                    nn.Linear(256,10))
 
 def init_weights(m):
     if type(m) == nn.Linear:
