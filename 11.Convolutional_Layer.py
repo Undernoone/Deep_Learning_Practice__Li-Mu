@@ -46,9 +46,8 @@ for i in range(10):
     l = (Y_hat - Y) ** 2
     conv2d.zero_grad()
     l.sum().backward()
-    conv2d.weight.data[:] -= 3e-2 * conv2d.weight.grad # 3e-2是学习率
+    conv2d.weight.data[:] -= 3e-2 * conv2d.weight.grad
     if(i+1) % 2 == 0:
         print(f'batch {i+1},loss {l.sum():.3f}')
 
-# 所学的卷积核的权重张量
 print(conv2d.weight.data.reshape((1,2)))
