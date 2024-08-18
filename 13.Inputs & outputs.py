@@ -30,7 +30,7 @@ print((K+1).shape)
 print((K+2).shape)
 print(K)
 print(K+1)
-K = torch.stack((K, K+1, K+2),0) # K与K+1之间的区别为K的每个元素加1
+K = torch.stack((K, K+1, K+2),0) # K与K+1之间的区别为K的每个元素  加1
 print(K.shape)
 print(corr2d_multi_in_out(X,K))
 
@@ -51,7 +51,7 @@ Y2 = corr2d_multi_in_out(X,K)
 assert float(torch.abs(Y1-Y2).sum()) < 1e-6
 print(float(torch.abs(Y1-Y2).sum()))
 
-# Pytorc卷积实现
+# Pytorch卷积实现
 def comp_conv2d(conv2d, X):
     X = X.reshape((1,1)+X.shape) # 在维度前面加入一个通道数和批量大小数
     Y = conv2d(X)  # 卷积处理是一个四维的矩阵
