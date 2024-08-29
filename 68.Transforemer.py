@@ -258,7 +258,6 @@ d2l.show_heatmaps(dec_self_attention_weights[:, :, :, :len(translation.split()) 
                   xlabel = 'Key positions', ylabel = 'Query position',
                   titles = ['Head %d' % i for i in range(1,5)], figsize=(7,3.5))
 d2l.plt.show()
-
 d2l.show_heatmaps(dec_inter_attention_weights, xlabel = 'Key positions',
                   ylabel = 'Query positions',
                   titles = ['Head %d' % i
