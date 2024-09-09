@@ -42,12 +42,12 @@ class EncoderBlock(nn.Module):
                  norm_shape, ffn_num_input, ffn_num_hiddens, num_heads,
                  dropout, use_bias=False, **kwargs):
         super(EncoderBlock, self).__init__(**kwargs)
-        self.attention = d2l.MultiHeadAttention(key_size, query_size,
-                                                value_size, num_hiddens,
-                                                num_heads, dropout, use_bias)
+        # 调整后的 MultiHeadAttention 初始化
+        self.attention = d2l.MultiHeadAttention(num_hiddens, num_heads, dropout, use_bias)
         self.addnorm1 = AddNorm(norm_shape, dropout)
         self.ffn = PositionWiseFFN(ffn_num_input, ffn_num_hiddens, num_hiddens)
         self.addnorm2 = AddNorm(norm_shape, dropout)
+
 
     def forward(self, X, valid_lens):
         Y = self.addnorm1(X, self.attention(X, X, X, valid_lens))
@@ -95,16 +95,14 @@ class DecoderBlock(nn.Module):
                  dropout, i, **kwargs):
         super(DecoderBlock, self).__init__(**kwargs)
         self.i = i
-        self.attention1 = d2l.MultiHeadAttention(key_size, query_size,
-                                                 value_size, num_hiddens,
-                                                 num_heads, dropout)
+        # 假设 MultiHeadAttention 只需要 num_hiddens, num_heads, 和 dropout
+        self.attention1 = d2l.MultiHeadAttention(num_hiddens, num_heads, dropout)
         self.addnorm1 = AddNorm(norm_shape, dropout)
-        self.attention2 = d2l.MultiHeadAttention(key_size, query_size,
-                                                 value_size, num_hiddens,
-                                                 num_heads, dropout)
+        self.attention2 = d2l.MultiHeadAttention(num_hiddens, num_heads, dropout)
         self.addnorm2 = AddNorm(norm_shape, dropout)
         self.ffn = PositionWiseFFN(ffn_num_input, ffn_num_hiddens, num_hiddens)
         self.addnorm3 = AddNorm(norm_shape, dropout)
+
 
     def forward(self, X, state):
         enc_outputs, enc_valid_lens = state[0], state[1]
@@ -262,5 +260,6 @@ d2l.show_heatmaps(dec_inter_attention_weights, xlabel = 'Key positions',
                   ylabel = 'Query positions',
                   titles = ['Head %d' % i
                             for i in range(1, 5)], figsize=(7, 3.5))
+
 d2l.plt.show()
 
